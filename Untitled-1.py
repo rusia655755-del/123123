@@ -14,7 +14,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.storage.memory import MemoryStorage
 
 # ========== === НАСТРОЙКИ === ==========
-API_TOKEN = "8431308016:AAHt5_Ygv-S0fKPM2q9C88-49PrUuPScZJQ"
+API_TOKEN = "8431308016:AAEvKejj9VzGe7mesnv5bBhlzGmRhqs0dwY"
 
 # ID группы (куда приходят заявки)
 ADMIN_CHAT_ID = -1001234567890  # <-- вставь ID супергруппы
@@ -267,3 +267,4 @@ if __name__ == "__main__":
     import asyncio
     logger.info("Bot started")
     asyncio.run(dp.start_polling(bot))
+
