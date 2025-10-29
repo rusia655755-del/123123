@@ -14,6 +14,7 @@ from aiogram.filters.state import StateFilter
 from aiogram.filters import Command
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.filters import Command
+from aiogram.types import FSInputFile
 
 # ========== === НАСТРОЙКИ (редактируй тут) === ==========
 API_TOKEN = "8431308016:AAEvKejj9VzGe7mesnv5bBhlzGmRhqs0dwY"  # токен бота
@@ -243,24 +244,24 @@ async def process_position(message: types.Message, state: FSMContext):
 async def default_handler(message: types.Message):
     await message.answer("Выберите опцию в меню или нажмите /start для начала.", reply_markup=main_menu)
 
-if __name__ == "__main__":
-    import asyncio
-    logger.info("Bot started")
+# === Админ-команда ===
+# Укажи здесь свой личный Telegram ID:
+OWNER_ID = 556091656  # <-- вставь сюда свой ID (получить можно у бота @userinfobot)
 
-    asyncio.run(dp.start_polling(bot))
-
-@dp.message(Command("admin"))
+@dp.message(Command("/admin"))
 async def admin_command(message: types.Message):
-    # Проверяем, что сообщение отправлено админом
-    if message.from_user.id != ADMIN_CHAT_ID:
+    """Простая админ-команда для проверки состояния и получения Excel"""
+    
+    # Проверяем, что команду вызвал именно владелец
+    if message.from_user.id != OWNER_ID:
         await message.answer("🚫 У вас нет доступа к админ-командам.")
         return
 
-    # Проверяем, есть ли файл с заявками
+    # Проверяем наличие файлов с заявками
     csv_exists = os.path.exists(CSV_FILE)
     xlsx_exists = os.path.exists(XLSX_FILE)
 
-    # Считаем количество строк (заявок)
+    # Подсчитываем количество заявок и время последней
     submissions_count = 0
     last_time = "—"
     if csv_exists:
@@ -270,9 +271,9 @@ async def admin_command(message: types.Message):
             if submissions_count > 0 and "timestamp" in df.columns:
                 last_time = df["timestamp"].iloc[-1]
         except Exception as e:
-            logger.exception("Ошибка чтения CSV: %s", e)
+            logger.exception("Ошибка при чтении CSV: %s", e)
 
-    # Формируем сообщение
+    # Формируем текст для администратора
     text = (
         "⚙️ <b>Админ-панель</b>\n\n"
         f"📊 Всего заявок: <b>{submissions_count}</b>\n"
@@ -281,14 +282,24 @@ async def admin_command(message: types.Message):
         f"📘 Excel файл: <code>{XLSX_FILE}</code>\n"
     )
 
+    # Отправляем статистику
     await message.answer(text, parse_mode="HTML")
 
-    # Прикрепляем Excel-файл, если есть
+    # Если есть Excel-файл — прикрепляем его
     if xlsx_exists:
         try:
-            file = types.FSInputFile(XLSX_FILE)
-            await bot.send_document(ADMIN_CHAT_ID, file, caption="📎 Последние заявки (Excel)")
+            file = FSInputFile(XLSX_FILE)
+            await bot.send_document(OWNER_ID, file, caption="📎 Последние заявки (Excel)")
         except Exception as e:
             logger.exception("Не удалось отправить Excel файл: %s", e)
+
+if __name__ == "__main__":
+    import asyncio
+    logger.info("Bot started")
+
+    asyncio.run(dp.start_polling(bot))
+
+
+
 
 
