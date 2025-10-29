@@ -139,7 +139,7 @@ async def show_vacancies(message: types.Message):
     text = "📌 Основные доступные вакансии:\n\n" + "\n".join(f"• {v}" for v in VACANCIES_EXAMPLES)
     await message.answer(text)
 
-@dp.message(lambda m: m.text == "📋 Начать опрос")
+@dp.message(lambda m: m.text == "📋 Подать заявку")
 async def start_survey(message: types.Message, state: FSMContext):
     await message.answer("Введите ФИО полностью (Фамилия Имя Отчество):")
     await state.set_state(Form.fio)
@@ -247,5 +247,6 @@ if __name__ == "__main__":
     logger.info("Bot started")
 
     asyncio.run(dp.start_polling(bot))
+
 
 
