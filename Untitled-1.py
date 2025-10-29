@@ -15,7 +15,7 @@ from aiogram.filters import Command
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 # ========== === НАСТРОЙКИ (редактируй тут) === ==========
-API_TOKEN = "8431308016:AAHt5_Ygv-S0fKPM2q9C88-49PrUuPScZJQ"  # токен бота
+API_TOKEN = "8431308016:AAEvKejj9VzGe7mesnv5bBhlzGmRhqs0dwY"  # токен бота
 ADMIN_CHAT_ID = -1003244858296  # ID группы или твой Telegram ID
 
 WELCOME_TEXT = """
@@ -237,4 +237,5 @@ async def default_handler(message: types.Message):
 if __name__ == "__main__":
     import asyncio
     logger.info("Bot started")
+
     asyncio.run(dp.start_polling(bot))
