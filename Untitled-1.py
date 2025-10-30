@@ -17,7 +17,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 API_TOKEN = "8431308016:AAEvKejj9VzGe7mesnv5bBhlzGmRhqs0dwY"
 
 # ID группы (куда приходят заявки)
-ADMIN_CHAT_ID = -1001234567890  # <-- вставь ID супергруппы
+ADMIN_CHAT_ID = -1003244858296  # <-- вставь ID супергруппы
 
 # ID твоего личного Telegram аккаунта
 OWNER_ID = 556091656  # <-- твой личный Telegram ID (@userinfobot покажет)
@@ -267,5 +267,6 @@ if __name__ == "__main__":
     import asyncio
     logger.info("Bot started")
     asyncio.run(dp.start_polling(bot))
+
 
 
