@@ -34,7 +34,7 @@ WELCOME_TEXT = """
 - Медицинский инструктор
 - Связист
 
-Нажмите «📋 Начать опрос», чтобы подать заявку.
+Нажмите «📋 Подать заявку», чтобы подать заявку.
 """
 
 # Регионы
@@ -79,7 +79,7 @@ dp = Dispatcher(storage=storage)
 # ========= Главное меню ==========
 main_menu = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="📋 Начать опрос"), KeyboardButton(text="📍 Условия по регионам")],
+        [KeyboardButton(text="📋 Подать заявку"), KeyboardButton(text="📍 Условия по регионам")],
         [KeyboardButton(text="ℹ️ Отношение / информация"), KeyboardButton(text="📂 Примеры вакансий")]
     ],
     resize_keyboard=True
@@ -131,7 +131,7 @@ async def show_vacancies(message: types.Message):
     text = "📌 Примеры вакансий:\n\n" + "\n".join([f"• {v}" for v in VACANCIES_EXAMPLES])
     await message.answer(text)
 
-@dp.message(lambda m: m.text == "📋 Начать опрос")
+@dp.message(lambda m: m.text == "📋 Подать заявку")
 async def start_survey(message: types.Message, state: FSMContext):
     await message.answer("Введите ФИО полностью:")
     await state.set_state(Form.fio)
@@ -267,4 +267,5 @@ if __name__ == "__main__":
     import asyncio
     logger.info("Bot started")
     asyncio.run(dp.start_polling(bot))
+
 
